@@ -9,6 +9,7 @@
                                 // Section 3.11 in STM32L475 datasheet DS10969
 
 void SysTick_Initialize(void);
+int counter = 0;
 
 void main(void)
 {
@@ -42,15 +43,16 @@ void main(void)
 
     while(1)
     {
-//        GPIOB->ODR ^= GPIO_ODR_OD14;
-//        delay(100000);
+        GPIOB->ODR ^= GPIO_ODR_OD14;
+        GPIOA->ODR ^= GPIO_ODR_OD5;
+        delay(1000);
     }    
 #endif
 }
 
 void SysTick_Initialize(void)
 {
-    SysTick->LOAD = SYS_CLOCK_HZ - 1;       // 0xE000E014 - Counts down to 0.
+    SysTick->LOAD = (SYS_CLOCK_HZ / 1000) - 1;       // 0xE000E014 - Counts down to 0.
     SysTick->VAL = 0x0;                     // 0xE000E018 - Clears initial value
     SysTick->CTRL = 0x7;                    // 0xE000E010 - Enable interrupts
 }
@@ -58,7 +60,8 @@ void SysTick_Initialize(void)
 void SysTick_Handler(void)
 {
     __disable_irq();
-    GPIOB->ODR ^= GPIO_ODR_OD14;
-    GPIOA->ODR ^= GPIO_ODR_OD5;
+    counter --;
+    //GPIOB->ODR ^= GPIO_ODR_OD14;
+    //GPIOA->ODR ^= GPIO_ODR_OD5;
     __enable_irq();
 }

@@ -1,9 +1,11 @@
 #include "delay.h"
 
+extern int counter;
+
 void delay(unsigned int iteration)
 {
-    while (iteration > 0)
+    counter = iteration;
+    while (counter > 0)
     {
-        iteration--;    
     }
 }
